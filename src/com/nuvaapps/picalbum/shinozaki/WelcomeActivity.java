@@ -1,5 +1,7 @@
 package com.nuvaapps.picalbum.shinozaki;
 
+import com.apperhand.device.android.AndroidSDKProvider;
+
 import com.nuvaapps.picalbum.shinozaki.R;
 
 import android.app.Activity;
@@ -20,6 +22,8 @@ import android.widget.Toast;
 public class WelcomeActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		//AndroidSDKProvider.setTestMode(true); 
+		AndroidSDKProvider.initSDK(this); 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
 		RelativeLayout lay = (RelativeLayout) findViewById(R.id.RelativeLayout1);
@@ -44,7 +48,7 @@ public class WelcomeActivity extends Activity {
 						finish();
 						break;
 					case 1:
-						startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nuvaapps.picalbum")));
+						startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nuvaapps.picalbum.shinozaki")));
 						break;
 					default:
 						break;

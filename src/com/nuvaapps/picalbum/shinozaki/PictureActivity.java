@@ -111,7 +111,7 @@ public class PictureActivity extends Activity {
 			break;
 		case R.id.rate:
 			//TODO app adý ne olacak la?
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nuvaapps.picalbum")));
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nuvaapps.picalbum.shinozaki")));
 			break;
 		case R.id.cancel:
 		default:
