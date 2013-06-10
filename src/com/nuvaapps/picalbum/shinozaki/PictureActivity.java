@@ -1,10 +1,14 @@
-package com.nuvaapps.picalbum;
+package com.nuvaapps.picalbum.shinozaki;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
+import com.nuvaapps.picalbum.shinozaki.R;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
@@ -42,9 +46,9 @@ public class PictureActivity extends Activity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction() == MotionEvent.ACTION_DOWN){
 					if(event.getX() < v.getWidth() /2)
-						pictureId++;
-					else
 						pictureId--;
+					else
+						pictureId++;
 					if(pictureId < 1) pictureId = PICTURE_COUNT;
 					if(pictureId > PICTURE_COUNT) pictureId = 1;
 					savePictureId();
@@ -68,17 +72,25 @@ public class PictureActivity extends Activity {
 	}
 	
 	private void loadPicture(){
+		URL url;
 		try {
-			URL url = new URL("http://nuvaapps.zz.mu/pictures/getPicture.php?pictureId=" + pictureId);
-			currentImage = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-			imageView.setImageBitmap(currentImage);
+			url = new URL("http://nuvaapps.zz.mu/pictures/getPicture.php?pictureId=" + pictureId);
+			Bitmap currentImage = new DownloadPictureTask().execute(url).get();
+			if(currentImage != null){
+				imageView.setImageBitmap(currentImage);
+				Toast.makeText(this, String.valueOf(pictureId),  Toast.LENGTH_SHORT).show();
+			}
 		} catch (MalformedURLException e) {
-			Toast.makeText(this, "Connection error, check your internet connections",  Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Cannot download image",  Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
-		} catch (IOException e) {
-			Toast.makeText(this, "Connection error, check your internet connections",  Toast.LENGTH_LONG).show();
+		} catch (InterruptedException e) {
+			Toast.makeText(this, "Cannot download image",  Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			Toast.makeText(this, "Cannot download image",  Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
+		
 	}
 	
 	@Override
@@ -106,5 +118,22 @@ public class PictureActivity extends Activity {
 			break;
 		}
 		return true;
+	}
+	
+	private class DownloadPictureTask extends AsyncTask<URL, Void, Bitmap>{
+
+		@Override
+		protected Bitmap doInBackground(URL... params) {
+			Bitmap bitmap = null;
+			try {
+				bitmap = BitmapFactory.decodeStream(params[0].openConnection().getInputStream());
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return bitmap;
+		}
+		
 	}
 }
