@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -90,10 +92,19 @@ public class PictureActivity extends Activity {
 				Toast.makeText(this, "Image saved to gallery",  Toast.LENGTH_LONG).show();
 			break;
 		case R.id.exit:
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+			break;
+		case R.id.rate:
+			//TODO app adý ne olacak la?
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nuvaapps.picalbum")));
+			break;
+		case R.id.cancel:
 		default:
 			break;
 		}
 		return true;
 	}
-
 }
