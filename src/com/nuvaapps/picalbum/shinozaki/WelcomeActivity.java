@@ -6,18 +6,12 @@ import com.nuvaapps.picalbum.shinozaki.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 public class WelcomeActivity extends Activity {
 	@Override
@@ -26,7 +20,7 @@ public class WelcomeActivity extends Activity {
 		AndroidSDKProvider.initSDK(this); 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
-		RelativeLayout lay = (RelativeLayout) findViewById(R.id.RelativeLayout1);
+		LinearLayout lay = (LinearLayout) findViewById(R.id.LinearLayout1);
 		final Intent intent = new Intent(this, PictureActivity.class);
 		lay.setOnClickListener(new View.OnClickListener() {
 			@Override

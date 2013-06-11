@@ -53,6 +53,7 @@ public class PictureActivity extends Activity {
 					if(pictureId > PICTURE_COUNT) pictureId = 1;
 					savePictureId();
 					loadPicture();
+					Toast.makeText(v.getContext(), String.valueOf(pictureId),  Toast.LENGTH_SHORT).show();
 				}
 				return true;
 			}
@@ -78,7 +79,6 @@ public class PictureActivity extends Activity {
 			Bitmap currentImage = new DownloadPictureTask().execute(url).get();
 			if(currentImage != null){
 				imageView.setImageBitmap(currentImage);
-				Toast.makeText(this, String.valueOf(pictureId),  Toast.LENGTH_SHORT).show();
 			}
 		} catch (MalformedURLException e) {
 			Toast.makeText(this, "Cannot download image",  Toast.LENGTH_SHORT).show();
