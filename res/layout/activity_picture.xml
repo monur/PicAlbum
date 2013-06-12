@@ -11,6 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.50"
-        android:src="@drawable/ic_launcher" android:contentDescription="Loading..."/>
+		android:contentDescription="Loading..."/>
 
 </LinearLayout>
