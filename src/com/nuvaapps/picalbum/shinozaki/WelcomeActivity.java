@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -32,26 +34,39 @@ public class WelcomeActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		final CharSequence[] items = {"Exit", "Rate", "Cancel"};
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    builder.setTitle("Sure?");
-	    builder.setItems(items, new DialogInterface.OnClickListener() {
-	               public void onClick(DialogInterface dialog, int which) {
-	            	   switch (which) {
-					case 0:
-						finish();
-						break;
-					case 1:
-						startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nuvaapps.picalbum.shinozaki")));
-						break;
-					default:
-						break;
-					}
-	           }
-	    });
-	    builder.create().show();
-	    
+		if(!isRated()){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		    builder.setTitle("Rate?");
+		    builder.setMessage("Do you want to rate this app?");
+		    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					finish();
+				}
+			});
+		    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					setRated();
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nuvaapps.picalbum.shinozaki")));
+				}
+			});
+		    builder.create().show();
+		}else{
+			finish();
+		}
 	}
 	
+	private boolean isRated(){
+		SharedPreferences pref = getSharedPreferences("Shinozaki", 0);
+		return pref.getBoolean("rated", false);
+	}
+	
+	private void setRated(){
+		SharedPreferences pref = getSharedPreferences("Shinozaki", 0);
+		Editor editor = pref.edit();
+		editor.putBoolean("rated", true);
+		editor.commit();
+	}
 }
 
