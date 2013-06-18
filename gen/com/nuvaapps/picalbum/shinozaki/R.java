@@ -36,14 +36,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int icon=0x7f020001;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f090000;
-        public static final int cancel=0x7f090007;
-        public static final int exit=0x7f090006;
-        public static final int exit_sub=0x7f090004;
+        public static final int LinearLayout1=0x7f090003;
+        public static final int RelativeLayout1=0x7f090000;
+        public static final int cancel=0x7f090009;
+        public static final int exit=0x7f090008;
+        public static final int exit_sub=0x7f090006;
         public static final int imageView1=0x7f090001;
-        public static final int rate=0x7f090005;
-        public static final int save=0x7f090003;
-        public static final int textView1=0x7f090002;
+        public static final int progressBar1=0x7f090002;
+        public static final int rate=0x7f090007;
+        public static final int save=0x7f090005;
+        public static final int textView1=0x7f090004;
     }
     public static final class layout {
         public static final int activity_picture=0x7f030000;
@@ -53,13 +55,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int picture=0x7f080000;
     }
     public static final class string {
-        public static final int action_settings=0x7f060004;
+        public static final int appCode=0x7f060002;
+        public static final int appMarketURL=0x7f060007;
         public static final int app_name=0x7f060000;
-        public static final int dummy_button=0x7f060001;
-        public static final int dummy_content=0x7f060002;
-        public static final int hello_world=0x7f060005;
-        public static final int title_activity_main=0x7f060003;
-        public static final int title_activity_picture=0x7f060006;
+        public static final int pictureCount=0x7f060003;
+        public static final int pictureSaveName=0x7f060005;
+        public static final int pictureSaveName2=0x7f060006;
+        public static final int pictureURL=0x7f060004;
+        public static final int toastPictureStart=0x7f060001;
+        public static final int welcomeString=0x7f060008;
     }
     public static final class style {
         /** 

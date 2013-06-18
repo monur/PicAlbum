@@ -3,7 +3,6 @@ package com.nuvaapps.picalbum.shinozaki;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 
 import com.nuvaapps.picalbum.shinozaki.R;
 
@@ -21,26 +20,30 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class PictureActivity extends Activity {
-	private static final int PICTURE_COUNT = 632;
+	private int PICTURE_COUNT;
 	ImageView imageView;
 	SharedPreferences prefs;
 	Bitmap currentImage;
 	int pictureId = 1;
+	String pictureURL = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_picture);
+		PICTURE_COUNT = Integer.parseInt(getResources().getString(R.string.pictureCount));
+		pictureURL = getResources().getString(R.string.pictureURL);
 		imageView = (ImageView)findViewById(R.id.imageView1);
-		Toast.makeText(this, "Tap right for next picture, left for previous", Toast.LENGTH_LONG ).show();
-		prefs = getSharedPreferences("PicAlbum", 0);
+		Toast.makeText(this, R.string.toastPictureStart, Toast.LENGTH_LONG ).show();
+		prefs = getSharedPreferences(getResources().getString(R.string.appCode), 0);
 		pictureId = prefs.getInt("pictureId", 1);
 		loadPicture();
-		LinearLayout layout = (LinearLayout)findViewById(R.id.LinearLayout1);
+		RelativeLayout layout = (RelativeLayout)findViewById(R.id.RelativeLayout1);
 		layout.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -53,7 +56,7 @@ public class PictureActivity extends Activity {
 					if(pictureId > PICTURE_COUNT) pictureId = 1;
 					savePictureId();
 					loadPicture();
-					Toast.makeText(v.getContext(), String.valueOf(pictureId),  Toast.LENGTH_SHORT).show();
+					//Toast.makeText(v.getContext(), String.valueOf(pictureId),  Toast.LENGTH_SHORT).show();
 				}
 				return true;
 			}
@@ -75,29 +78,19 @@ public class PictureActivity extends Activity {
 	private void loadPicture(){
 		URL url;
 		try {
-			url = new URL("http://nuvaapps.zz.mu/pictures/getPicture.php?pictureId=" + pictureId);
-			Bitmap currentImage = new DownloadPictureTask().execute(url).get();
-			if(currentImage != null){
-				imageView.setImageBitmap(currentImage);
-			}
+			url = new URL(pictureURL + "?pictureId=" + pictureId);
+			new DownloadPictureTask().execute(url);
 		} catch (MalformedURLException e) {
 			Toast.makeText(this, "Cannot download image",  Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			Toast.makeText(this, "Cannot download image",  Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			Toast.makeText(this, "Cannot download image",  Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-		}
-		
+		} 
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.save:
-			String result = MediaStore.Images.Media.insertImage(getContentResolver(), currentImage, "ai_shinozaki" + pictureId , "Ai Shinozaki " + pictureId);
+			String result = MediaStore.Images.Media.insertImage(getContentResolver(), currentImage, getResources().getString(R.string.pictureSaveName) + pictureId , getResources().getString(R.string.pictureSaveName2) + pictureId);
 			if(result == null)
 				Toast.makeText(this, "Cannot save image",  Toast.LENGTH_LONG).show();
 			else
@@ -110,8 +103,7 @@ public class PictureActivity extends Activity {
 			startActivity(intent);
 			break;
 		case R.id.rate:
-			//TODO app adý ne olacak la?
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nuvaapps.picalbum.shinozaki")));
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.appMarketURL))));
 			break;
 		case R.id.cancel:
 		default:
@@ -122,18 +114,32 @@ public class PictureActivity extends Activity {
 	
 	private class DownloadPictureTask extends AsyncTask<URL, Void, Bitmap>{
 
+		private ProgressBar bar = (ProgressBar)findViewById(R.id.progressBar1);
+        @Override
+        protected void onPreExecute() {
+        	bar.setVisibility(View.VISIBLE);
+        }
 		@Override
 		protected Bitmap doInBackground(URL... params) {
-			Bitmap bitmap = null;
+			final Bitmap bitmap;
 			try {
 				bitmap = BitmapFactory.decodeStream(params[0].openConnection().getInputStream());
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						imageView.setImageBitmap(bitmap);
+					}
+				});
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return bitmap;
+			return null;
 		}
-		
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			bar.setVisibility(View.INVISIBLE);
+		}
 	}
 }

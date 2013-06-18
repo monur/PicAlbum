@@ -2,12 +2,14 @@
 <resources>
 
     <string name="app_name">Ai Shinozaki</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_picture">PictureActivity</string>
+    <string name="toastPictureStart">Tap right for next picture, left for previous</string>
+    <string name="appCode">shinozaki</string>
+    <string name="pictureCount">632</string>
+    <string name="pictureURL">http://nuvaapps.zz.mu/pictures/getPicture.php</string>
+    <string name="pictureSaveName">ai_shinozaki</string>
+    <string name="pictureSaveName2">Ai Shinozaki</string>
+    <string name="appMarketURL">market://details?id=com.nuvaapps.picalbum.shinozaki</string>
+    <string name="welcomeString">Hot Collection of Ai Shinozaki\n Tap to start...</string>
    
 
 </resources>

@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|center_horizontal"
-        android:text="Hot Collection of Ai Shinozaki\n Tap to start..."
+        android:text="@string/welcomeString"
         android:textColor="#ff3333"
         android:textColorHint="#ff0000"
         android:textSize="20sp"
